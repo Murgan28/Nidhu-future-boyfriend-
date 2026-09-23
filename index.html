@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Secret Realm for Nidhu ✨</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 10%, #1a0f28 0%, #0d0614 55%, #050208 100%);
+      --card-bg: rgba(26, 16, 38, 0.75);
+      --text-main: #f9f6fc;
+      --text-muted: #d8cce6;
+      --accent-rose: #ff4d79;
+      --gold-champagne: #f4d06f;
+      --gold-glow: rgba(244, 208, 111, 0.45);
+      --border-royal: rgba(244, 208, 111, 0.3);
+      --lamp-overlay: transparent;
+    }
+
+    body.lamp-lit {
+      --bg-gradient: radial-gradient(circle at 50% 15%, #3d2358 0%, #1e102d 60%, #0c0514 100%);
+      --card-bg: rgba(45, 27, 65, 0.85);
+      --text-main: #ffffff;
+      --gold-champagne: #ffe28a;
+      --gold-glow: rgba(255, 226, 138, 0.7);
+      --border-royal: rgba(255, 226, 138, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Ambient Golden Dust Canvas */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ========================================================
+       STAGE 1: WELCOME & GREETING SCREEN
+       ======================================================== */
+    #greetingStage {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      background: radial-gradient(circle at center, #1b0e2b 0%, #09030e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s ease;
+    }
+
+    .greeting-card {
+      background: rgba(22, 12, 33, 0.85);
+      border: 1.5px solid var(--border-royal);
+      box-shadow: 0 0 50px rgba(244, 208, 111, 0.25), inset 0 0 25px rgba(255, 77, 121, 0.15);
+      border-radius: 28px;
+      padding: 45px 30px;
+      max-width: 620px;
+      width: 92%;
+      backdrop-filter: blur(16px);
+      position: relative;
+    }
+
+    .live-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(244, 208, 111, 0.12);
+      border: 1px solid rgba(244, 208, 111, 0.3);
+      color: var(--gold-champagne);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .greeting-card h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.2rem, 8vw, 4.8rem);
+      color: #fff;
+      text-shadow: 0 0 15px var(--accent-rose), 0 0 30px var(--accent-rose);
+      line-height: 1.2;
+    }
+
+    .greeting-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold-champagne);
+      font-size: 1.15rem;
+      margin: 10px 0 20px;
+    }
+
+    .greeting-body {
+      font-size: 0.96rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .btn-universe {
+      padding: 16px 36px;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #ff4d79, #9c1555, #f4d06f);
+      border: none;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(255, 77, 121, 0.5);
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-universe:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(244, 208, 111, 0.6);
+    }
+
+    /* ========================================================
+       STAGE 2: 15-SECOND CINEMATIC COUNTDOWN LOADER
+       ======================================================== */
+    #loaderStage {
+      position: fixed;
+      inset: 0;
+      z-index: 19000;
+      background: radial-gradient(circle at center, #150921 0%, #05010a 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.8s ease;
+    }
+
+    .cosmic-ring-box {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin-bottom: 25px;
+    }
+
+    .cosmic-svg {
+      transform: rotate(-90deg);
+      width: 140px;
+      height: 140px;
+    }
+
+    .cosmic-svg circle {
+      fill: none;
+      stroke-width: 6;
+      cx: 70;
+      cy: 70;
+      r: 62;
+    }
+
+    .circle-bg {
+      stroke: rgba(255, 255, 255, 0.08);
+    }
+
+    .circle-progress {
+      stroke: var(--gold-champagne);
+      stroke-dasharray: 390;
+      stroke-dashoffset: 390;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear;
+      filter: drop-shadow(0 0 8px var(--gold-champagne));
+    }
+
+    .countdown-number {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.3rem;
+      color: #fff;
+      text-shadow: 0 0 15px var(--accent-rose);
+    }
+
+    .loader-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.4rem;
+      color: var(--gold-champagne);
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .loader-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #ebdff7;
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 52px;
+    }
+
+    /* ========================================================
+       STAGE 3: ROYAL DOOR & PASSWORD VAULT
+       ======================================================== */
+    #doorOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 18000;
+      display: flex;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    #doorOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .door {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(145deg, #13091e 0%, #07030c 100%);
+      border: 1px solid rgba(244, 208, 111, 0.25);
+      transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+      position: relative;
+    }
+
+    .door-left { border-right: 1.5px solid var(--gold-champagne); }
+    .door-right { border-left: 1.5px solid var(--gold-champagne); }
+
+    #doorOverlay.opened .door-left { transform: translateX(-100%); }
+    #doorOverlay.opened .door-right { transform: translateX(100%); }
+    #doorOverlay.opened { pointer-events: none; }
+
+    .vault-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 18500;
+      transition: opacity 0.8s ease;
+    }
+
+    .vault-box {
+      background: rgba(18, 9, 27, 0.92);
+      border: 1.5px solid var(--border-royal);
+      box-shadow: 0 0 45px rgba(244, 208, 111, 0.3), inset 0 0 20px rgba(255, 77, 121, 0.2);
+      border-radius: 24px;
+      padding: 40px 28px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      backdrop-filter: blur(16px);
+    }
+
+    .vault-box h2 {
+      font-family: 'Cinzel Decorative', serif;
+      color: var(--gold-champagne);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(244, 208, 111, 0.5);
+    }
+
+    .vault-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #ded1eb;
+      margin-bottom: 22px;
+    }
+
+    .vault-input {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 35px;
+      border: 2px solid rgba(255, 77, 121, 0.5);
+      background: rgba(7, 3, 11, 0.85);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .vault-input:focus {
+      border-color: var(--gold-champagne);
+      box-shadow: 0 0 20px rgba(244, 208, 111, 0.5);
+    }
+
+    .btn-cute {
+      margin-top: 20px;
+      padding: 13px 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(45deg, #ff4d79, #c9184a, #f4d06f);
+      border: none;
+      border-radius: 35px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 77, 121, 0.5);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .btn-cute:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 35px rgba(255, 77, 121, 0.8);
+    }
+
+    .hint-box {
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: #aa94c2;
+    }
+
+    .hint-box span {
+      color: #ff9ebb;
+      font-weight: 600;
+    }
+
+    .error-msg {
+      margin-top: 12px;
+      color: #ff6b81;
+      font-size: 0.9rem;
+      min-height: 22px;
+    }
+
+    .lockout-box {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255, 77, 121, 0.15);
+      border-radius: 14px;
+      border: 1px solid #ff4d79;
+    }
+
+    /* ========================================================
+       STAGE 4: MAIN SECRET REALM
+       ======================================================== */
+    #mainContent {
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 1.5s ease 0.8s;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 20px 20px 90px;
+    }
+
+    /* Aesthetic Hanging Lamp */
+    .lamp-container {
+      position: fixed;
+      top: 15px;
+      right: 25px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .lamp-wire {
+      width: 2px;
+      height: 38px;
+      background: linear-gradient(to bottom, #f4d06f, rgba(244, 208, 111, 0.4));
+    }
+
+    .lamp-bulb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #473a26;
+      box-shadow: 0 0 8px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.4s ease;
+      user-select: none;
+    }
+
+    body.lamp-lit .lamp-bulb {
+      background: #ffe28a;
+      box-shadow: 0 0 28px #ffe28a, 0 0 50px rgba(244, 208, 111, 0.9);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      text-align: center;
+      padding: 45px 15px 30px;
+    }
+
+    .glow-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(4rem, 9vw, 7.2rem);
+      color: #ffffff;
+      display: inline-block;
+      text-shadow:
+        0 0 15px #ff4d79,
+        0 0 30px #ff1493,
+        0 0 55px #ff1493,
+        0 0 80px #ff4d79;
+      animation: pulseGlow 2.8s infinite alternate;
+      line-height: 1.1;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255, 77, 121, 0.8)); }
+      100% { transform: scale(1.02); filter: drop-shadow(0 0 35px rgba(255, 77, 121, 1)); }
+    }
+
+    .hero-welcome-quote {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.15rem, 2.8vw, 1.6rem);
+      color: var(--gold-champagne);
+      margin-top: 15px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .hero-destiny-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      color: #f1e4fb;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+      line-height: 1.6;
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      color: var(--gold-champagne);
+      margin: 60px 0 25px;
+      text-shadow: 0 0 18px var(--gold-glow);
+    }
+
+    /* Photo Grid & Cards */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 32px;
+      margin-top: 25px;
+    }
+
+    .photo-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-royal);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-rose);
+      box-shadow: 0 16px 40px rgba(255, 77, 121, 0.35);
+    }
+
+    .img-wrapper {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0d0614;
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.8s ease;
+      filter: blur(14px);
+    }
+
+    .img-wrapper.loaded img {
+      filter: blur(0);
+    }
+
+    /* 4-Second Particle Loader Simulation */
+    .particle-loader {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(28, 14, 40, 0.96) 0%, rgba(8, 3, 13, 0.98) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      transition: opacity 0.6s ease;
+    }
+
+    .particle-spinner {
+      width: 52px;
+      height: 52px;
+      border: 3px solid rgba(255, 77, 121, 0.2);
+      border-top-color: var(--accent-rose);
+      border-right-color: var(--gold-champagne);
+      border-radius: 50%;
+      animation: spinRing 1s infinite linear;
+    }
+
+    .loader-text {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: #ffccd7;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    .caption {
+      margin-top: 14px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      text-align: center;
+      color: #eddcfc;
+      min-height: 46px;
+    }
+
+    .btn-download {
+      margin-top: 12px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--accent-rose);
+      background: rgba(255, 77, 121, 0.08);
+      color: #ff9ebb;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-download:hover {
+      background: var(--accent-rose);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255, 77, 121, 0.6);
+    }
+
+    /* ========================================================
+       MASTER 8-PHOTO COLLAGE SPECIAL HIGHLIGHT STYLING
+       ======================================================== */
+    .master-collage-showcase {
+      margin: 70px 0 30px;
+      position: relative;
+    }
+
+    .master-collage-container {
+      background: radial-gradient(circle at center, rgba(35, 18, 52, 0.85) 0%, rgba(15, 7, 22, 0.95) 100%);
+      border-radius: 28px;
+      padding: 30px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(14px);
+      text-align: center;
+    }
+
+    /* Royal Animated Highlight Glowing Border */
+    .master-glow-frame {
+      position: relative;
+      border-radius: 20px;
+      padding: 4px;
+      background: linear-gradient(
+        135deg,
+        #f4d06f,
+        #ff4d79,
+        #9c1555,
+        #f4d06f,
+        #ff4d79
+      );
+      background-size: 300% 300%;
+      animation: frameGradientShift 5s ease infinite alternate;
+      box-shadow:
+        0 0 25px rgba(244, 208, 111, 0.4),
+        0 0 50px rgba(255, 77, 121, 0.35);
+    }
+
+    @keyframes frameGradientShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .master-img-wrapper {
+      height: 720px;
+      border-radius: 16px;
+    }
+
+    .master-collage-details {
+      margin-top: 25px;
+      padding: 10px;
+    }
+
+    .master-collage-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.4rem, 3.2vw, 2rem);
+      color: var(--gold-champagne);
+      text-shadow: 0 0 15px rgba(244, 208, 111, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .master-collage-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: #f7edff;
+      max-width: 820px;
+      margin: 0 auto 18px;
+      line-height: 1.7;
+    }
+
+    .master-collage-subquotes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      color: var(--gold-champagne);
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 22px;
+    }
+
+    .master-download-btn {
+      padding: 13px 32px;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      border-color: var(--gold-champagne);
+      color: var(--gold-champagne);
+      background: rgba(244, 208, 111, 0.1);
+    }
+
+    .master-download-btn:hover {
+      background: var(--gold-champagne);
+      color: #12091e;
+      box-shadow: 0 0 25px rgba(244, 208, 111, 0.8);
+    }
+
+    /* Quotes Grid */
+    .quotes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 25px;
+    }
+
+    .quote-box {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 22px;
+      border-left: 4px solid var(--gold-champagne);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .quote-box:hover {
+      transform: translateY(-4px);
+    }
+
+    .lang-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      background: rgba(244, 208, 111, 0.15);
+      color: var(--gold-champagne);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .original-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .btn-translate {
+      background: none;
+      border: none;
+      color: #ff85a1;
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .translation-text {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: #d1bfe6;
+      border-top: 1px dashed rgba(244, 208, 111, 0.25);
+      padding-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* Funny Warning Section */
+    .warning-section {
+      margin-top: 75px;
+      background: linear-gradient(135deg, rgba(255, 77, 121, 0.12), rgba(60, 15, 35, 0.45));
+      border: 2px dashed #ff4d79;
+      border-radius: 26px;
+      padding: 38px 26px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(255, 77, 121, 0.15);
+    }
+
+    .warning-title {
+      font-family: 'Cinzel Decorative', serif;
+      color: #ff4d79;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      margin-bottom: 16px;
+      text-shadow: 0 0 15px rgba(255, 77, 121, 0.6);
+    }
+
+    .warning-desc {
+      font-size: 1.12rem;
+      line-height: 1.85;
+      max-width: 820px;
+      margin: 0 auto;
+      color: #fcedf4;
+    }
+
+    .warning-desc strong {
+      color: var(--gold-champagne);
+    }
+
+    @media (max-width: 600px) {
+      .master-img-wrapper {
+        height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Floating Golden & Rose Dust Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ========================================================
+       STAGE 1: AESTHETIC GREETING LANDING SCREEN
+       ======================================================== -->
+  <div id="greetingStage">
+    <div class="greeting-card">
+      <div class="live-time-badge" id="liveClock">✨ Loading Moment...</div>
+      <h1>Hii Nidhu 🌸</h1>
+      <p class="greeting-sub">"A divine sanctuary crafted exclusively for you..."</p>
+      
+      <p class="greeting-body">
+        Welcome, dearest Nidhu. You are entering a secret celestial portal filled with timeless memories, laughter, and an eternal celebration of your radiance. Every line here belongs only to you.
+      </p>
+
+      <button class="btn-universe" onclick="startCosmicJourney()">
+        Step Into Our Universe ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STAGE 2: 15-SECOND CINEMATIC COUNTDOWN LOADER
+       ======================================================== -->
+  <div id="loaderStage">
+    <div class="cosmic-ring-box">
+      <svg class="cosmic-svg">
+        <circle class="circle-bg"></circle>
+        <circle class="circle-progress" id="cosmicCircle"></circle>
+      </svg>
+      <div class="countdown-number" id="countdownSec">15</div>
+    </div>
+    <h2 class="loader-title">ALIGNING THE STARS FOR NIDHU...</h2>
+    <p class="loader-quote" id="dynamicQuote">"Destiny is weaving the golden threads of our memories..."</p>
+  </div>
+
+  <!-- ========================================================
+       STAGE 3: ROYAL DOOR & PASSWORD VAULT
+       ======================================================== -->
+  <div id="doorOverlay">
+    <div class="door door-left"></div>
+    <div class="door door-right"></div>
+
+    <div class="vault-content" id="vaultScreen">
+      <div class="vault-box">
+        <h2>The Secret Vault</h2>
+        <p class="vault-quote">"True love speaks in whispers that only one soul can unlock..."</p>
+        
+        <input type="text" id="passInput" class="vault-input" placeholder="Type password here..." autocomplete="off" />
+        <br />
+        <button class="btn-cute" onclick="verifyPassword()">Enter Her Heart 🗝️</button>
+
+        <div class="hint-box">
+          Hint (90% clear): <span>"Nidhu is so so b..."</span> (What everyone knows you are! ✨)
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <!-- 1-Minute Punishment Loader -->
+        <div class="lockout-box" id="lockoutBox">
+          <p>⚠️ <strong>Wrong 3 times! Your Punishment:</strong></p>
+          <p style="margin: 8px 0; font-style: italic; color: #ffccd7;">
+            "Raha nahi jaata, tadap hi aisi hai! 😜 Thoda sabar rakho, beautiful..."
+          </p>
+          <p>Locked for: <strong id="timerVal" style="color: var(--gold-champagne);">60</strong>s</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       STAGE 4: MAIN SECRET REALM
+       ======================================================== -->
+  <div id="mainContent">
+
+    <!-- Aesthetic Lamp Switch -->
+    <div class="lamp-container" onclick="toggleLampLight()" title="Click to Switch Aesthetic Lamp Light">
+      <div class="lamp-wire"></div>
+      <div class="lamp-bulb">💡</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-banner">
+      <h1 class="glow-name">Nidhu</h1>
+      <p class="hero-welcome-quote">Welcome to your eternal secret diary, radiant queen ✨</p>
+      <p class="hero-destiny-quote">
+        "Like the timeless tales of Radha & Krishna, some bonds are destined in the stars."
+      </p>
+    </section>
+
+    <!-- Couple Moments Gallery -->
+    <h2 class="section-title">✨ Divine Moments & Memories ✨</h2>
+    <div class="photo-grid" id="mainPhotoGrid">
+
+      <!-- Photo 1 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_1.png" alt="Nidhu & Boyfriend Beautiful Pose" />
+        </div>
+        <p class="caption">"Holding you close is where whole galaxies make sense."</p>
+        <a class="btn-download" href="images/nidhu_love_1.png" download="Nidhu_4K_1.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 2 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_2.png" alt="Sweet Kiss on Cheek" />
+        </div>
+        <p class="caption">"One kiss on that radiant cheek and every worry simply vanishes."</p>
+        <a class="btn-download" href="images/nidhu_love_2.png" download="Nidhu_4K_2.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 3 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_3.png" alt="Nidhu Pout Selfie" />
+        </div>
+        <p class="caption">"That cute pout could conquer any heart in a split second."</p>
+        <a class="btn-download" href="images/nidhu_love_3.png" download="Nidhu_4K_3.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 4 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_4.png" alt="Loving Gaze" />
+        </div>
+        <p class="caption">"Looking into your eyes feels like looking at home."</p>
+        <a class="btn-download" href="images/nidhu_love_4.png" download="Nidhu_4K_4.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 5 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_5.png" alt="Sweet Lip Kiss" />
+        </div>
+        <p class="caption">"Timeless, silent, and written in destiny."</p>
+        <a class="btn-download" href="images/nidhu_love_5.png" download="Nidhu_4K_5.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 6 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_6.png" alt="Sweet Backhug" />
+        </div>
+        <p class="caption">"Wrapped in warmth, smiles, and eternal blessings."</p>
+        <a class="btn-download" href="images/nidhu_love_6.png" download="Nidhu_4K_6.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 7 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_7.png" alt="Eye to Eye Connection" />
+        </div>
+        <p class="caption">"Our love story captured in one single glance."</p>
+        <a class="btn-download" href="images/nidhu_love_7.png" download="Nidhu_4K_7.png">📥 Download 4K</a>
+      </div>
+
+      <!-- Photo 8 -->
+      <div class="photo-card">
+        <div class="img-wrapper">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">4K MAGIC LOADING...</div></div>
+          <img src="images/nidhu_love_8.png" alt="Intertwined Cuddle" />
+        </div>
+        <p class="caption">"In your arms, life feels complete and perfectly peaceful."</p>
+        <a class="btn-download" href="images/nidhu_love_8.png" download="Nidhu_4K_8.png">📥 Download 4K</a>
+      </div>
+
+    </div>
+
+    <!-- ========================================================
+         MASTER 8-PHOTO COLLAGE SPECIAL HIGHLIGHT SECTION
+         ======================================================== -->
+    <section class="master-collage-showcase">
+      <div class="master-collage-container">
+        <div class="master-glow-frame">
+          <div class="img-wrapper master-img-wrapper">
+            <div class="particle-loader">
+              <div class="particle-spinner"></div>
+              <div class="loader-text">UNVEILING 8 CHAPTERS OF LOVE...</div>
+            </div>
+            <img src="images/nidhu_master_8_collage.png" alt="Nidhu & Boyfriend Complete 8-Story Collage" />
+          </div>
+        </div>
+        
+        <div class="master-collage-details">
+          <h3 class="master-collage-title">👑 The Octave of Eternal Love 👑</h3>
+          <p class="master-collage-quote">
+            "Eight frames, eight heartbeats, one eternal story. From every playful pout to every tender kiss, you are the masterpiece of this lifetime."
+          </p>
+          <div class="master-collage-subquotes">
+            <span>✨ Radha-Krishna Ke Prem Ka Aathwa Rang</span>
+            <span>•</span>
+            <span>🌹 Timeless Soulmates</span>
+            <span>•</span>
+            <span>💫 Perfectly Destined</span>
+          </div>
+          <a class="btn-download master-download-btn" href="images/nidhu_master_8_collage.png" download="Nidhu_Master_8_Collage_4K.png">
+            📥 Download Master 8-Collage (Ultra 4K HD)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dedicated 4-Pic Story Grids -->
+    <h2 class="section-title">💖 Dedicated Story Grids 💖</h2>
+    <div class="photo-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      <div class="photo-card">
+        <div class="img-wrapper" style="height: 540px;">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">COLLAGE PART 1 LOADING...</div></div>
+          <img src="images/nidhu_collage_1.png" alt="8 Collage Grid Part 1" />
+        </div>
+        <p class="caption">"Four moods, four smiles, one unforgettable queen."</p>
+        <a class="btn-download" href="images/nidhu_collage_1.png" download="Nidhu_Collage_1_4K.png">📥 Download 4K</a>
+      </div>
+      <div class="photo-card">
+        <div class="img-wrapper" style="height: 540px;">
+          <div class="particle-loader"><div class="particle-spinner"></div><div class="loader-text">COLLAGE PART 2 LOADING...</div></div>
+          <img src="images/nidhu_collage_2.png" alt="8 Collage Grid Part 2" />
+        </div>
+        <p class="caption">"Every frame tells the tale of eternal grace and joy."</p>
+        <a class="btn-download" href="images/nidhu_collage_2.png" download="Nidhu_Collage_2_4K.png">📥 Download 4K</a>
+      </div>
+    </div>
+
+    <!-- Legendary Love Jodis & Multilingual Quotes Section -->
+    <h2 class="section-title">🌹 Legendary Jodis & Eternal Quotes 🌹</h2>
+    <div class="quotes-container">
+
+      <!-- Hindi 1 (Radha Krishna) -->
+      <div class="quote-box">
+        <span class="lang-badge">Hindi • Radha-Krishna</span>
+        <p class="original-quote">"राधा-कृष्णा जैसी यह जोड़ी है, जहाँ शब्द खामोश हों तब भी रूहें आपस में बात करती हैं।"</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"A pair like Radha-Krishna, where souls converse in divine silence even when words fall still."</p>
+      </div>
+
+      <!-- Hindi 2 (Bajirao Mastani) -->
+      <div class="quote-box">
+        <span class="lang-badge">Hindi • Bajirao-Mastani</span>
+        <p class="original-quote">"बाजीराव ने मस्तानी से मोहब्बत की है, अय्याशी नहीं... हमारा प्यार भी हर इम्तिहान से परे है।"</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Like Bajirao's pure and unwavering honor for Mastani, this devotion rises beyond every trial of time."</p>
+      </div>
+
+      <!-- Hindi 3 (Laila Majnu) -->
+      <div class="quote-box">
+        <span class="lang-badge">Hindi • Laila-Majnu</span>
+        <p class="original-quote">"इश्क वो नहीं जो दुनिया को दिखाए, लैला-मजनूं की तरह ये वो एहसास है जो सिर्फ खुदा को समझ आए।"</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Love isn't meant for the crowd to judge; like Laila and Majnu, it is an emotion only Heaven understands."</p>
+      </div>
+
+      <!-- Marathi 1 (Radha Krishna) -->
+      <div class="quote-box">
+        <span class="lang-badge">Marathi • राधा-कृष्ण</span>
+        <p class="original-quote">"जशी राधा कृष्णाच्या बासरीच्या सुरात रंगली, तशीच ही जोडी प्रेमात अमर झाली आहे."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Just as Radha immersed in Krishna’s flute melody, this couple is forever woven in pure love."</p>
+      </div>
+
+      <!-- Marathi 2 (Romeo & Juliet) -->
+      <div class="quote-box">
+        <span class="lang-badge">Marathi • रोमियो-ज्युलिएट</span>
+        <p class="original-quote">"रोमियो-ज्युलिएटच्या अमर कहाणीप्रमाणे, काळ बदलला तरी तुमचे निष्पाप प्रेम सदैव चमकेल."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Like the timeless ballad of Romeo and Juliet, your innocent bond shall outshine all eras."</p>
+      </div>
+
+      <!-- Marathi 3 (Heer Ranjha) -->
+      <div class="quote-box">
+        <span class="lang-badge">Marathi • हीर-रांझा</span>
+        <p class="original-quote">"प्रेम म्हणजे शब्दांशिवाय एकमेकांचं मन जाणणं, हीर-रांझासारखं एकनिष्ठ आणि संपूर्ण."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Love is sensing each other's soul without words—devoted, tender, and complete like Heer-Ranjha."</p>
+      </div>
+
+      <!-- Tamil 1 (Radha Krishna) -->
+      <div class="quote-box">
+        <span class="lang-badge">Tamil • ராதா-கிருஷ்ணர்</span>
+        <p class="original-quote">"ராதா-கிருஷ்ணன் காதல் போல, உங்கள் இருவரின் ஜோடியும் விண்ணில் எழுதப்பட்ட ஒரு வரம்."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Like the love of Radha-Krishna, your bond as a couple is a celestial boon written in heaven."</p>
+      </div>
+
+      <!-- Tamil 2 (Romeo & Juliet) -->
+      <div class="quote-box">
+        <span class="lang-badge">Tamil • ரோமியோ-ஜூலியட்</span>
+        <p class="original-quote">"ரோமியோ-ஜூலியட் காவியம் போல, எல்லைகள் கடந்த தூய காதலின் அடையாளம் நீங்கள்."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"Like the epic of Romeo and Juliet, you represent a pure devotion that transcends all boundaries."</p>
+      </div>
+
+      <!-- Tamil 3 (Eternal Bond) -->
+      <div class="quote-box">
+        <span class="lang-badge">Tamil • அமர காதல்</span>
+        <p class="original-quote">"காலங்கள் கடந்தாலும் மறையாத ஒரு மெய் சிலிர்க்கும் காதலை உங்கள் கண்கள் பேசுகின்றன."</p>
+        <button class="btn-translate" onclick="toggleTrans(this)">Translate to English 🌐</button>
+        <p class="translation-text">"An eternal love that never fades speaks vividly and softly through your eyes."</p>
+      </div>
+
+    </div>
+
+    <!-- Funny Warning Section -->
+    <section class="warning-section">
+      <h2 class="warning-title">NIDHU BIG WARNING ⚠️</h2>
+      <p class="warning-desc">
+        Listen carefully madam! In these mirror photos, I already know you will look at yourself and say: 
+        <em>"Arey yaar, I look fat here!"</em> 🙄🤦‍♂️<br /><br />
+        <strong>STOP RIGHT THERE!</strong> 🛑<br />
+        Honestly, you are <strong>SO, SO SLIM</strong>, extraordinarily hot, stunning, and mind-blowingly gorgeous! 
+        The camera lens is literally blushing trying to capture your beauty. You are the ultimate queen of elegance, so stop over-analyzing and accept that you are 1000/10 perfection! 🔥👑💖
+      </p>
+    </section>
+
+  </div>
+
+  <script>
+    // --- 1. Real-Time Aesthetic Clock & Date ---
+    function updateLiveClock() {
+      const now = new Date();
+      const options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const clockEl = document.getElementById("liveClock");
+      if (clockEl) {
+        clockEl.textContent = `✨ ${now.toLocaleDateString('en-US', options)}`;
+      }
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    // --- 2. Stage Transitions: Greeting -> 15s Countdown Loader -> Door Screen ---
+    const loadingQuotes = [
+      "Destiny is weaving the golden threads of our memories...",
+      "Like Radha found Krishna, the universe is aligning its stars...",
+      "Unlocking secret smiles and timeless glances...",
+      "Almost there, beautiful... something magical awaits you ✨"
+    ];
+
+    function startCosmicJourney() {
+      const greetingStage = document.getElementById("greetingStage");
+      const loaderStage = document.getElementById("loaderStage");
+
+      greetingStage.style.opacity = "0";
+      greetingStage.style.transform = "scale(0.95)";
+      
+      setTimeout(() => {
+        greetingStage.style.display = "none";
+        loaderStage.style.display = "flex";
+        run15SecondLoader();
+      }, 900);
+    }
+
+    function run15SecondLoader() {
+      let secondsLeft = 15;
+      const countEl = document.getElementById("countdownSec");
+      const circleEl = document.getElementById("cosmicCircle");
+      const quoteEl = document.getElementById("dynamicQuote");
+      
+      const circumference = 390;
+      circleEl.style.strokeDasharray = circumference;
+
+      const countdownInterval = setInterval(() => {
+        secondsLeft--;
+        countEl.textContent = secondsLeft;
+        
+        const offset = circumference - (circumference * ((15 - secondsLeft) / 15));
+        circleEl.style.strokeDashoffset = offset;
+
+        if (secondsLeft === 11) quoteEl.textContent = loadingQuotes[1];
+        if (secondsLeft === 7) quoteEl.textContent = loadingQuotes[2];
+        if (secondsLeft === 3) quoteEl.textContent = loadingQuotes[3];
+
+        if (secondsLeft <= 0) {
+          clearInterval(countdownInterval);
+          finishCosmicLoading();
+        }
+      }, 1000);
+    }
+
+    function finishCosmicLoading() {
+      const loaderStage = document.getElementById("loaderStage");
+      const doorOverlay = document.getElementById("doorOverlay");
+
+      loaderStage.style.opacity = "0";
+      setTimeout(() => {
+        loaderStage.style.display = "none";
+        doorOverlay.classList.add("active");
+      }, 700);
+    }
+
+    // --- 3. Password Verification & 1-Minute Lockout ---
+    const CORRECT_PASSWORD = "Nidhu is so so beautiful";
+    let wrongAttempts = 0;
+    let isLocked = false;
+
+    function verifyPassword() {
+      if (isLocked) return;
+
+      const input = document.getElementById("passInput").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (input.toLowerCase() === CORRECT_PASSWORD.toLowerCase()) {
+        errorMsg.textContent = "";
+        unlockSecretVault();
+      } else {
+        wrongAttempts++;
+        if (wrongAttempts >= 3) {
+          triggerLockout();
+        } else {
+          errorMsg.textContent = `Incorrect password! (${3 - wrongAttempts} attempt(s) remaining) ❌`;
+        }
+      }
+    }
+
+    function triggerLockout() {
+      isLocked = true;
+      const lockoutBox = document.getElementById("lockoutBox");
+      const errorMsg = document.getElementById("errorMsg");
+      const passInput = document.getElementById("passInput");
+
+      errorMsg.textContent = "";
+      lockoutBox.style.display = "block";
+      passInput.disabled = true;
+
+      let remaining = 60;
+      const timerDisplay = document.getElementById("timerVal");
+
+      const interval = setInterval(() => {
+        remaining--;
+        timerDisplay.textContent = remaining;
+        if (remaining <= 0) {
+          clearInterval(interval);
+          isLocked = false;
+          wrongAttempts = 0;
+          lockoutBox.style.display = "none";
+          passInput.disabled = false;
+          passInput.value = "";
+          errorMsg.textContent = "You can try again now! Look closely at the hint 😉";
+        }
+      }, 1000);
+    }
+
+    function unlockSecretVault() {
+      const doorOverlay = document.getElementById("doorOverlay");
+      const vaultScreen = document.getElementById("vaultScreen");
+      const mainContent = document.getElementById("mainContent");
+
+      vaultScreen.style.opacity = "0";
+      setTimeout(() => {
+        doorOverlay.classList.add("opened");
+        mainContent.style.opacity = "1";
+        initImageParticleLoaders();
+      }, 400);
+    }
+
+    document.getElementById("passInput").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") verifyPassword();
+    });
+
+    // --- 4. 4-Second Particle Loader Simulation for Images ---
+    function initImageParticleLoaders() {
+      const wrappers = document.querySelectorAll(".img-wrapper");
+      wrappers.forEach((wrap) => {
+        const loader = wrap.querySelector(".particle-loader");
+        setTimeout(() => {
+          if (loader) {
+            loader.style.opacity = "0";
+            setTimeout(() => loader.remove(), 600);
+          }
+          wrap.classList.add("loaded");
+        }, 4000);
+      });
+    }
+
+    // --- 5. Lamp Toggle ---
+    function toggleLampLight() {
+      document.body.classList.toggle("lamp-lit");
+    }
+
+    // --- 6. Translation Toggle ---
+    function toggleTrans(btn) {
+      const trans = btn.nextElementSibling;
+      if (trans.style.display === "block") {
+        trans.style.display = "none";
+        btn.textContent = "Translate to English 🌐";
+      } else {
+        trans.style.display = "block";
+        btn.textContent = "Hide Translation 🔼";
+      }
+    }
+
+    // --- 7. Golden & Rose Star Dust Canvas ---
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.2 + 0.8;
+        this.speedY = Math.random() * 0.5 + 0.2;
+        this.speedX = (Math.random() - 0.5) * 0.35;
+        this.opacity = Math.random() * 0.65 + 0.2;
+        this.isRose = Math.random() > 0.65;
+      }
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.x < 0 || this.x > canvas.width) this.x = Math.random() * canvas.width;
+      }
+      draw() {
+        ctx.fillStyle = this.isRose 
+          ? `rgba(255, 77, 121, ${this.opacity})` 
+          : `rgba(244, 208, 111, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 55; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+</body>
+</html>
+
